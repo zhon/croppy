@@ -1,11 +1,14 @@
 require "test_helper"
 
-class CroppyTest < Minitest::Test
-  def test_that_it_has_a_version_number
-    refute_nil ::Croppy::VERSION
+
+module Croppy
+
+  describe 'croppy' do
+
+    it 'has a version number' do
+      refute_nil ::Croppy::VERSION
+    end
+
   end
 
-  def test_it_does_something_useful
-    assert false
-  end
 end
