@@ -1,0 +1,6 @@
+require 'croppy/cli'
+
+Croppy::CLI.start
+
+
+# vim: syntax=ruby
