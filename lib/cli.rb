@@ -2,17 +2,30 @@ require 'thor'
 
 module Croppy
   class CLI < Thor
+    OPTIONS_FILENAME = '.croppy.yaml'
 
-    private
 
-    # read options from config file and override with command line
-    def options
-      original_options = super
-      filename = original_options[:file] || '.csvconverter.yaml'
-      return original_options unless File.exists?(filename)
-      defaults = ::YAML::load_file(filename) || {}
-      defaults.merge(original_options)
-      # alternatively, set original_options[:langs] and then return it
+
+    no_commands do
+
+      # read options from config file and override with command line
+      def options
+        return @my_options || ( @my_options = Options.new(super, OPTIONS_FILENAME).options )
+      end
+
+    end
+
+    class Options
+      attr_reader :options
+
+      def initialize(opts, filename)
+        if File.exist?(filename)
+          @options = ::YAML.load_file(filename) || {}
+          @options.merge!(opts)
+        else
+          @options = opts
+        end
+      end
     end
 
   end
