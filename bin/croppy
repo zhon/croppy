@@ -1,6 +1,12 @@
-require 'croppy/cli'
+#!/usr/bin/env ruby
 
-Croppy::CLI.start
+source_root = File.expand_path(File.dirname(__FILE__) + "/..")
+$LOAD_PATH.unshift("#{source_root}/lib")
+
+
+require 'cli'
+
+Croppy::CLI.start ARGV
 
 
 # vim: syntax=ruby
