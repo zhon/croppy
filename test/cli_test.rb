@@ -3,7 +3,7 @@ require "test_helper"
 require 'cli'
 
 module Croppy
-  describe "CLI" do
+  describe CLI do
 
     it "options are the same for every instance called" do
       croppy = CLI.new

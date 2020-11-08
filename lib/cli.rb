@@ -1,10 +1,41 @@
 require 'thor'
 
+require 'logger'
+
 module Croppy
+
+  $logger = Logger.new File.new(Dir.home + '/croppy.log', File::WRONLY | File::APPEND | File::CREAT)
+  #$logger = Logger.new STDOUT
+
   class CLI < Thor
     OPTIONS_FILENAME = '.croppy.yaml'
 
+    class_option :verbose, :type => :boolean
 
+    desc "crop INPUT", "crop INPUT (file or directory)"
+    long_desc <<-LONGDESC
+      `crop INPUT` will crop the INPUT which can be a image file or a directory
+      of image files.
+
+      > $ croppy /Users/zhon/Pictures/Instagram/
+
+      > $ croppy /Users/zhon/Pictures/Instagram/image.jpg
+    LONGDESC
+    #option '', alias: '-d', type: :boolean, desc: "perform a trial run with no changes made"
+    #option :dest, desc: 'backup to this distination'
+    def crop input
+      $logger.info("cropping #{input}")
+
+      Crop.crop input
+    end
+
+    #allows arguments to the default comand without specifing the command
+    def method_missing(method, *args)
+      args = ["crop", method.to_s] + args
+      CLI.start(args)
+    end
+
+    default_task :crop
 
     no_commands do
 
