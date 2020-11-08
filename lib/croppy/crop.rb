@@ -1,15 +1,25 @@
 require 'croppy/magick'
 
+require 'pathname'
+
 module Croppy
 
     class Crop
 
       def self.crop input
-
-
+        pn = Pathname.new input
+        crop = nil
+        if pn.directory?
+          crop = Crop.new input
+          # todo crop the dir
+        else
+          crop = Crop.new pn.dirname, "#{pn.dirname}/cropped"
+          crop.crop pn.basename
+        end
       end
 
       def initialize input_dir, output_dir
+        # todo make sure the output dir exists
         @input_dir = input_dir
         @output_dir = output_dir
       end

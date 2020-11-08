@@ -2,6 +2,8 @@ require 'thor'
 
 require 'logger'
 
+require 'croppy/crop'
+
 module Croppy
 
   $logger = Logger.new File.new(Dir.home + '/croppy.log', File::WRONLY | File::APPEND | File::CREAT)
