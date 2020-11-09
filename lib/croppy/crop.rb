@@ -10,8 +10,11 @@ module Croppy
         pn = Pathname.new input
         crop = nil
         if pn.directory?
-          crop = Crop.new input
-          # todo crop the dir
+          crop = Crop.new input, "#{input}/cropped"
+          files = Dir.glob "#{input}/*.jpg"
+          files.each do |item|
+            crop.crop File.basename(item)
+          end
         else
           crop = Crop.new pn.dirname, "#{pn.dirname}/cropped"
           crop.crop pn.basename
