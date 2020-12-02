@@ -13,7 +13,7 @@ module Croppy
       MiniMagick::Tool::Convert.new do |c|
         c << input
         c.size "#{width}x#{height}"
-        c << "xc:"
+        c << "canvas:"
         c.swap.+
         c.gravity "center"
         c.composite
@@ -23,4 +23,31 @@ module Croppy
 
   end
 end
+
+=begin
+  magick identify rose:
+
+  Split up an Phi cropped image by adding in overlapping data
+  magick test.jpg -crop 2x3+27@ +repage +adjoin cropped/rose_3x3@_%d.gif
+
+  Split up a 2x3 cropped image into
+  magick test.jpg -crop 2x3@ +repage +adjoin cropped/test_2x3@_%d.gif
+
+  This one doesn't work correctly
+
+  magick test.jpg -size 720x1080 canvas: +swap -gravity center -composite -crop 2x3@ +repage +adjoin cropped/rose_2x3@_%d.gif
+
+  These commands work but require a temp file
+  magick test.jpg -size 720x1080 canvas: +swap -gravity center -composite test2.jpg
+  magick test2.jpg -crop 2x3@ +repage +adjoin cropped/rose_3x3@_%d.gif
+
+
+  magick rose: -size 84x55 canvas: +swap -gravity center -composite  rose.jpg
+  magick rose.jpg   -crop 3x2@ +repage +adjoin cropped/rose@_%d.gif
+
+  magick rose: -size 84x55 canvas: +swap -gravity center -composite +repage  -crop 3x2@ +repage +adjoin cropped/rose@_%d.gif
+
+  magick test.jpg -gravity center -background white -extent 720x1080 -crop 2x3@ +repage cropped/test%d.png
+  magick rose: -gravity center -background white -extent 84x55 -crop 3x2@ +repage rose-%d.gif
+=end
 
