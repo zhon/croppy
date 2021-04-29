@@ -33,8 +33,10 @@ module Croppy
 
         dimensions = Magick::dimensions input
 
-        size = dimensions.max
-        Magick::crop(input, size, size, output)
+        size = dimensions.max + 2
+        #Magick::crop(input, size, size, output)
+        #Magick::to_square_with_blur(input, output, size)
+        Magick::to_square(input, output, size)
       end
 
 

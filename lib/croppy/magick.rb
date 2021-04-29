@@ -21,6 +21,55 @@ module Croppy
       end
     end
 
+    def self.to_square(input, output, size)
+
+      MiniMagick::Tool::Convert.new do |c|
+        c << input
+        c.stack do |s|
+          s.clone 0
+          s.resize "#{size}x#{size}!"
+          s.blur "0x20"
+          s.fill :grey
+          s.colorize '90%'
+        end
+        c.stack do |s|
+          s.clone 0
+          s.bordercolor :grey
+          s.border '1x1'
+        end
+        c.delete 0
+        c.gravity :center
+        c.compose :over
+        c.composite
+        c << output
+      end
+    end
+
+    def self.to_square_with_blur(input, output, size)
+
+      MiniMagick::Tool::Convert.new do |c|
+        c << input
+        c.stack do |s|
+          s.clone 0
+          s.resize "#{size}x#{size}!"
+          s.blur "0x20"
+          s.fill :white
+          s.colorize '5%'
+        end
+        c.stack do |s|
+          s.clone 0
+          s.bordercolor 'black'
+          s.border '1x1'
+        end
+        c.delete 0
+        c.gravity :center
+        c.compose :over
+        c.composite
+        c << output
+      end
+    end
+
+
   end
 end
 
