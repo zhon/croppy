@@ -22,13 +22,16 @@ module Croppy
       > $ croppy /Users/zhon/Pictures/Instagram/
 
       > $ croppy /Users/zhon/Pictures/Instagram/image.jpg
+
+      options can be stored in ~/#{OPTIONS_FILENAME}
     LONGDESC
+    option :border, aliases: '-b', type: :string, default: :blur, desc: "blur, black, white"
     #option '', alias: '-d', type: :boolean, desc: "perform a trial run with no changes made"
     #option :dest, desc: 'backup to this distination'
     def crop input
       $logger.info("cropping #{input}")
 
-      Crop.crop input
+      Crop.crop input, options
     end
 
     #allows arguments to the default comand without specifing the command

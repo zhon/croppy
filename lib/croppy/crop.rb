@@ -6,18 +6,18 @@ module Croppy
 
     class Crop
 
-      def self.crop input
+      def self.crop input, options
         pn = Pathname.new input
         crop = nil
         if pn.directory?
           crop = Crop.new input, "#{input}/cropped"
           files = Dir.glob "#{input}/*.jpg"
           files.each do |item|
-            crop.crop File.basename(item)
+            crop.crop File.basename(item), options
           end
         else
           crop = Crop.new pn.dirname, "#{pn.dirname}/cropped"
-          crop.crop pn.basename
+          crop.crop pn.basename, options
         end
       end
 
@@ -27,16 +27,24 @@ module Croppy
         @output_dir = output_dir
       end
 
-      def crop(filename)
+      def crop(filename, options)
         input = "#{@input_dir}/#{filename}"
         output = "#{@output_dir}/#{filename}"
 
         dimensions = Magick::dimensions input
 
         size = dimensions.max + 2
+        case options[:border].to_sym
+        when :blur
+          Magick::to_square_with_blur(input, output, size)
+        else
+          raise "Unimplemented"
+        end
+
+        #size = dimensions.max + 2
         #Magick::crop(input, size, size, output)
         #Magick::to_square_with_blur(input, output, size)
-        Magick::to_square(input, output, size)
+        #Magick::to_square(input, output, size)
       end
 
 

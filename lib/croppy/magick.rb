@@ -21,7 +21,11 @@ module Croppy
       end
     end
 
-    def self.to_square(input, output, size)
+    def self.to_square(input, output, size, border:)
+
+
+  #c.bordercolor border
+  #c.border "#{(size - image.dimensions[0])/2}x#{(size - image.dimensions[1])/2}"
 
       MiniMagick::Tool::Convert.new do |c|
         c << input

@@ -9,12 +9,13 @@ module Croppy
     describe "crop" do
 
       it "calls instance of Crop.crop" do
-        input = "/Users/zhon/Pictures/Instagram/image.jpg"
+        input = "~/Pictures/image.jpg"
+        options = {}
         any_instance_of(Crop) do |item|
           mock(item).crop.with_any_args
         end
 
-        Crop::crop input
+        Crop::crop input, options
 
       end
     end
