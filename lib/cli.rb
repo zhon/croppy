@@ -25,7 +25,8 @@ module Croppy
 
       options can be stored in ~/#{OPTIONS_FILENAME}
     LONGDESC
-    option :border, aliases: '-b', type: :string, default: :blur, desc: "blur, black, white"
+    option :background, aliases: '-b', type: :string, default: :blur, desc: "blur, black, white"
+    option :border, aliases: '-r', type: :string, default: :grey, desc: "grey, black, white"
     #option '', alias: '-d', type: :boolean, desc: "perform a trial run with no changes made"
     #option :dest, desc: 'backup to this distination'
     def crop input
@@ -43,7 +44,8 @@ module Croppy
 
       options can be stored in ~/#{OPTIONS_FILENAME}
     LONGDESC
-    option :border, aliases: '-b', type: :string, default: :blur, desc: "blur, black, white"
+    option :background, aliases: '-b', type: :string, default: :blur, desc: "blur, black, white"
+    option :border, aliases: '-r', type: :string, default: :grey, desc: "grey, black, white"
     def tile input
       $logger.info("tiling #{input}")
 
@@ -77,9 +79,15 @@ module Croppy
           @options = ::YAML.load_file(filename) || {}
           @options.merge!(opts)
         else
-          @options = opts
+          @options = opts.dup
         end
+        convert_values_to_symbols!
       end
+
+      def convert_values_to_symbols!
+        @options.transform_values!(&:to_sym)
+      end
+
     end
 
   end

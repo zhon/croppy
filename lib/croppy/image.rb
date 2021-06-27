@@ -16,7 +16,7 @@ module Croppy
         dimensions = Magick::dimensions @filename
 
         size = dimensions.max + 2
-        case options[:border].to_sym
+        case options[:background]
         when :blur
           Magick::to_square_with_blur(@filename, output, size)
         else

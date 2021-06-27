@@ -27,7 +27,7 @@ module Croppy
       it "options are murged with config file options" do
         filename = 'invalid_filename'
         opts = {hello: 'world'}
-        config_file_opts = {count: 1}
+        config_file_opts = {count: 1.to_s}
 
         stub(File).exist?(filename) { true }
         mock(::YAML).load_file(filename) { config_file_opts }
