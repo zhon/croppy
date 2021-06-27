@@ -1,6 +1,8 @@
-require 'croppy/magick'
+require 'croppy/image'
 
 require 'pathname'
+
+# new name for croppy gramit
 
 module Croppy
 
@@ -8,17 +10,19 @@ module Croppy
 
       def self.crop input, options
         pn = Pathname.new input
-        crop = nil
         if pn.directory?
-          crop = Crop.new input, "#{input}/cropped"
           files = Dir.glob "#{input}/*.jpg"
           files.each do |item|
-            crop.crop File.basename(item), options
+            Image.new(item).crop("#{input}/cropped", options)
           end
         else
-          crop = Crop.new pn.dirname, "#{pn.dirname}/cropped"
-          crop.crop pn.basename, options
+          output = "#{pn.dirname}/cropped"
+          Image.new(input).crop(output, options)
         end
+      end
+
+      def self.tile input, options
+
       end
 
       def initialize input_dir, output_dir
@@ -26,27 +30,6 @@ module Croppy
         @input_dir = input_dir
         @output_dir = output_dir
       end
-
-      def crop(filename, options)
-        input = "#{@input_dir}/#{filename}"
-        output = "#{@output_dir}/#{filename}"
-
-        dimensions = Magick::dimensions input
-
-        size = dimensions.max + 2
-        case options[:border].to_sym
-        when :blur
-          Magick::to_square_with_blur(input, output, size)
-        else
-          raise "Unimplemented"
-        end
-
-        #size = dimensions.max + 2
-        #Magick::crop(input, size, size, output)
-        #Magick::to_square_with_blur(input, output, size)
-        #Magick::to_square(input, output, size)
-      end
-
 
     end
 

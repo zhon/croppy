@@ -4,6 +4,9 @@ module Croppy
 
   class Magick
 
+# create squares
+#magick ~/Pictures/facebook/Instagram/20171118_17_26_49_33.jpg -crop 3x2@ +repage +adjoin tile-%d.jpg
+
     def self.dimensions(filename)
       MiniMagick::Image.open(filename).dimensions
     end

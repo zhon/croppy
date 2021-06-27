@@ -34,6 +34,24 @@ module Croppy
       Crop.crop input, options
     end
 
+    desc "tile INPUT", "tile INPUT (image filename)"
+    long_desc <<-LONGDESC
+      `tile INPUT` will tile the INPUT which can be a image file or a directory
+      of image files.
+
+      > $ croppy /Users/zhon/Pictures/Instagram/image.jpg
+
+      options can be stored in ~/#{OPTIONS_FILENAME}
+    LONGDESC
+    option :border, aliases: '-b', type: :string, default: :blur, desc: "blur, black, white"
+    def tile input
+      $logger.info("tiling #{input}")
+
+      Crop.tile input, options
+    end
+
+
+
     #allows arguments to the default comand without specifing the command
     def method_missing(method, *args)
       args = ["crop", method.to_s] + args
